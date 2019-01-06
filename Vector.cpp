@@ -1,20 +1,20 @@
 #include <iostream>
 using namespace std;
-template <typename T> // Assume Vector only takes in integer or double for template typename T
+template <typename T> 
 
 class Vector {
 private:
-	int sz; // the number of elements in this Vector
-	T * buf; // the base of the array of Ts, you must allocate it
+	int sz;
+	T * buf;
 public:
-	Vector( int n ){ // Vector v1(10); -- create a 10 element Vector
+	Vector( int n ){
 		sz = n;
 		buf = new T[sz];
 		for (int i = 0; i < sz; i++){
 			buf[i] = 0;
 		}
 	};
-	Vector(initializer_list<T> L ){ // Vector v1{T1, T2, T3};
+	Vector(initializer_list<T> L ){
 		sz = L.size();
 
 		buf = new T[sz];
@@ -24,22 +24,22 @@ public:
 			count++;
 		}
 	};	
-	~Vector(){ // destructor called automatically when a Vector dies Destructor should free memory used, your program should have no leak/lost/still-reachable/errors(suppressed or not), besides 72704 bytes in one still-reachable block (a g++/valgrind bug on some versions).
+	~Vector(){
 		delete []buf;
 	};
-	Vector( const Vector & v ){ // Vector v2(v1); deep-copy
+	Vector( const Vector & v ){
 		sz = v.sz;
 		buf = new T[v.sz];
 		for (int i = 0; i < sz; i++){
 			buf[i] = v.buf[i];
 		}
 	};
-	int size (){		// v1.size() returns 10 for v1 example above
+	int size (){		
 		return sz;
 	}; 
 
 
-	T & operator [] ( const int i ){ // T x = V[i]; Access out-of-bound index should throw an error to be caught in outside scope
+	T & operator [] ( const int i ){ 
 		if(i < sz){
 			return buf[i];
 		}
@@ -51,7 +51,7 @@ public:
 		return buf[i];
 	
 	};
-	T operator * ( const Vector & v ) const{ // T x = V1 * V2
+	T operator * ( const Vector & v ) const{ 
 		T count = 0.0;
 		if (sz > v.sz){
 			for (int i = 0; i < v.sz; i++){
@@ -66,7 +66,7 @@ public:
 		}
 		return count;
 	};
-	Vector operator + ( const Vector & v ) const{ // V3 = V1 + V2; [1, 2, 3] + [4, 5, 6, 7] = [5, 7, 9, 7]
+	Vector operator + ( const Vector & v ) const{ 
 		T temp = 0.0;
 		if (sz < v.sz){
 			for (int i = 0; i < v.sz; i++){
@@ -82,7 +82,7 @@ public:
 
 		}
 	};
-	const Vector & operator = ( const Vector & v ){ // V1 = V2;
+	const Vector & operator = ( const Vector & v ){
 		sz = v.sz;
 		delete [] buf;
 		buf = new T[v.sz];
@@ -90,7 +90,7 @@ public:
 			buf[i] = v.buf[i];
 		}
 	};
-	bool operator == ( const Vector & v ) const{ //if ( V1 == V2 )...
+	bool operator == ( const Vector & v ) const{
 		bool temp = false;
 		if (sz == v.sz){
 			for (int i = 0; i < sz; i++){
@@ -108,7 +108,7 @@ public:
 		}
 		return true;
 	};
-	bool operator != ( const Vector & v ) const{ // if ( V1 != V2 )...
+	bool operator != ( const Vector & v ) const{
 		bool temp = true;
 		if (sz == v.sz){
 			for (int i = 0; i < sz; i++){
@@ -127,8 +127,6 @@ public:
 		return false;
 	};
 	friend Vector operator * (const int n, const Vector &v){
-	//template <typename U> friend Vector<U> operator * ( const int n, const Vector<U> & v ){
-	// V1 = 20 * V2; -- each element of V1 will be element of V2 * 20
 		Vector temp(v);
 		for (int i = 0; i < temp.sz; i++){
 			temp.buf[i] = temp.buf[i] * n; 
@@ -138,14 +136,13 @@ public:
 
 	};
 	friend Vector operator + ( const int n, const Vector & v ){
-	// V1 = 20 + V2; -- each element of V1 will be element of V2 + 20
 		Vector temp(v);
 		for (int i = 0; i < temp.sz; i++){
 			temp.buf[i] = temp.buf[i] + n; 
 		}
 		return temp;
 	};
-	friend ostream& operator << ( ostream & o, const Vector & v ){// cout << V2; -- prints the vector in this format (v0, v1, v2, ... vn-1);	
+	friend ostream& operator << ( ostream & o, const Vector & v ){	
 		std::cout << "(";
 		for (int i = 0; i < v.sz - 1; i++){
 			std::cout << v.buf[i] << ",";
@@ -156,10 +153,6 @@ public:
 };
 
 int main(){
-
-
-	// add at least one test case for each method defined in Vector
-
 	Vector<int> v1(10);
 	cout << "Testing Vector Constructor:" << endl;
 	cout << "Vector<int> v1(10) = " << v1;
